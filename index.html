@@ -5,355 +5,91 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Карта Заброшек</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #1a1a2e;
-            color: #eee;
-            min-height: 100vh;
-        }
-        .header {
-            background: #16213e;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #0f3460;
-        }
-        .header h1 {
-            font-size: 1.5rem;
-            color: #e94560;
-        }
-        .nav-buttons {
-            display: flex;
-            gap: 10px;
-        }
-        .nav-btn {
-            background: #0f3460;
-            color: #fff;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .nav-btn:hover {
-            background: #e94560;
-        }
-        .main-content {
-            padding: 20px;
-        }
-        .auth-modal {
-            display: flex;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .auth-box {
-            background: #16213e;
-            padding: 30px;
-            border-radius: 10px;
-            max-width: 400px;
-            width: 90%;
-            text-align: center;
-        }
-        .auth-box h2 {
-            color: #e94560;
-            margin-bottom: 20px;
-        }
-        .auth-step {
-            background: #0f3460;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 5px;
-            text-align: left;
-        }
-        .auth-step .step-num {
-            background: #e94560;
-            color: #fff;
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            margin-right: 10px;
-        }
-        .tg-btn {
-            background: #0088cc;
-            color: #fff;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 5px;
-            width: 100%;
-            margin: 15px 0;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-        .tg-btn:hover {
-            background: #006699;
-        }
-        .auth-input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #0f3460;
-            border-radius: 5px;
-            background: #1a1a2e;
-            color: #fff;
-            font-size: 1rem;
-            margin: 10px 0;
-        }
-        .login-btn {
-            background: #27ae60;
-            color: #fff;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 5px;
-            width: 100%;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-        .login-btn:hover {
-            background: #219a52;
-        }
-        .warning-box {
-            background: rgba(233, 69, 96, 0.2);
-            border: 1px solid #e94560;
-            padding: 15px;
-            border-radius: 5px;
-            margin-top: 15px;
-            text-align: left;
-        }
-        .warning-box h4 {
-            color: #e94560;
-            margin-bottom: 10px;
-        }
-        .warning-box ul {
-            margin-left: 20px;
-        }
-        .banned-box {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.9);
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-        }
-        .banned-content {
-            background: #16213e;
-            padding: 40px;
-            border-radius: 10px;
-            text-align: center;
-            max-width: 400px;
-        }
-        .banned-content h2 {
-            color: #e94560;
-            margin-bottom: 20px;
-        }
-        .map-container {
-            height: 60vh;
-            background: #0f3460;
-            border-radius: 10px;
-            margin: 20px 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #888;
-        }
-        .filters {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 20px 0;
-        }
-        .filter-btn {
-            background: #0f3460;
-            color: #fff;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 20px;
-            cursor: pointer;
-        }
-        .filter-btn.active {
-            background: #e94560;
-        }
-        .add-object-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .add-object-box {
-            background: #16213e;
-            padding: 30px;
-            border-radius: 10px;
-            max-width: 500px;
-            width: 90%;
-        }
-        .add-object-box h2 {
-            color: #e94560;
-            margin-bottom: 20px;
-        }
-        .form-group {
-            margin: 15px 0;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #aaa;
-        }
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid #0f3460;
-            border-radius: 5px;
-            background: #1a1a2e;
-            color: #fff;
-        }
-        .form-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        .cancel-btn {
-            background: #e94560;
-            color: #fff;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            flex: 1;
-        }
-        .submit-btn {
-            background: #27ae60;
-            color: #fff;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            flex: 1;
-        }
-        .error-toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #e94560;
-            color: #fff;
-            padding: 15px 20px;
-            border-radius: 5px;
-            display: none;
-        }
-        .success-toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #27ae60;
-            color: #fff;
-            padding: 15px 20px;
-            border-radius: 5px;
-            display: none;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #1a1a2e; color: #eee; min-height: 100vh; }
+        .header { background: #16213e; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0f3460; }
+        .header h1 { font-size: 1.5rem; color: #e94560; }
+        .nav-buttons { display: flex; gap: 10px; }
+        .nav-btn { background: #0f3460; color: #fff; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; transition: 0.3s; }
+        .nav-btn:hover { background: #e94560; }
+        .main-content { padding: 20px; }
+        .auth-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 1000; }
+        .auth-box { background: #16213e; padding: 30px; border-radius: 10px; max-width: 400px; width: 90%; text-align: center; }
+        .auth-box h2 { color: #e94560; margin-bottom: 20px; }
+        .auth-step { background: #0f3460; padding: 15px; margin: 10px 0; border-radius: 5px; text-align: left; }
+        .auth-step .step-num { background: #e94560; color: #fff; width: 25px; height: 25px; border-radius: 50%; display: inline-flex; justify-content: center; align-items: center; margin-right: 10px; }
+        .tg-btn { background: #0088cc; color: #fff; border: none; padding: 12px 20px; border-radius: 5px; width: 100%; margin: 15px 0; cursor: pointer; font-size: 1rem; }
+        .tg-btn:hover { background: #006699; }
+        .auth-input { width: 100%; padding: 12px; border: 2px solid #0f3460; border-radius: 5px; background: #1a1a2e; color: #fff; font-size: 1rem; margin: 10px 0; }
+        .login-btn { background: #27ae60; color: #fff; border: none; padding: 12px 20px; border-radius: 5px; width: 100%; cursor: pointer; font-size: 1rem; }
+        .login-btn:hover { background: #219a52; }
+        .warning-box { background: rgba(233, 69, 96, 0.2); border: 1px solid #e94560; padding: 15px; border-radius: 5px; margin-top: 15px; text-align: left; }
+        .warning-box h4 { color: #e94560; margin-bottom: 10px; }
+        .warning-box ul { margin-left: 20px; }
+        .banned-box { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; z-index: 2000; }
+        .banned-content { background: #16213e; padding: 40px; border-radius: 10px; text-align: center; max-width: 400px; }
+        .banned-content h2 { color: #e94560; margin-bottom: 20px; }
+        .map-container { height: 60vh; background: #0f3460; border-radius: 10px; margin: 20px 0; display: flex; justify-content: center; align-items: center; color: #888; }
+        .filters { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0; }
+        .filter-btn { background: #0f3460; color: #fff; border: none; padding: 8px 15px; border-radius: 20px; cursor: pointer; }
+        .filter-btn.active { background: #e94560; }
+        .error-toast { position: fixed; bottom: 20px; right: 20px; background: #e94560; color: #fff; padding: 15px 20px; border-radius: 5px; display: none; }
+        .success-toast { position: fixed; bottom: 20px; right: 20px; background: #27ae60; color: #fff; padding: 15px 20px; border-radius: 5px; display: none; }
     </style>
 </head>
 <body>
-    <!-- Бан модал -->
     <div class="banned-box" id="bannedBox">
         <div class="banned-content">
             <h2>🚫 ДОСТУП ЗАПРЕЩЁН</h2>
-            <p>Ваш аккаунт заблокирован администрацией за нарушение правил.</p>
-            <p style="margin-top: 15px; color: #aaa;">Обратитесь к администратору для разблокировки.</p>
+            <p>Ваш аккаунт заблокирован.</p>
         </div>
     </div>
 
-    <!-- Хедер -->
     <div class="header">
         <h1>🗺️ Карта Заброшек</h1>
         <div class="nav-buttons">
-            <button class="nav-btn" onclick="showMap()">Карта</button>
-            <button class="nav-btn" onclick="showProfile()">Профиль</button>
-            <button class="nav-btn" id="modBtn" style="display:none;" onclick="showModeration()">Модерация</button>
-            <button class="nav-btn" id="adminBtn" style="display:none;" onclick="showAdmin()">Админка</button>
-            <button class="nav-btn" onclick="showAuth()">Вход через Telegram</button>
+            <button class="nav-btn" onclick="showAuth()">🔐 Вход</button>
+            <button class="nav-btn" id="logoutBtn" style="display:none;" onclick="logout()">🚪 Выход</button>
         </div>
     </div>
 
-    <!-- Основной контент -->
     <div class="main-content">
-        <!-- Фильтры -->
         <div class="filters">
             <button class="filter-btn active" data-filter="all">Все</button>
             <button class="filter-btn" data-filter="factory">🏭 Заводы</button>
-            <button class="filter-btn" data-filter="shelter">🛡️ Бомбоубежища</button>
+            <button class="filter-btn" data-filter="shelter">🛡️ Убежища</button>
             <button class="filter-btn" data-filter="house">🏠 Дома</button>
-            <button class="filter-btn" data-filter="structure">🏗️ Структуры</button>
-            <button class="filter-btn" data-filter="other">📍 Другие</button>
-            <button class="filter-btn" data-filter="pending">⏳ Непроверенные</button>
         </div>
-
-        <!-- Карта -->
         <div class="map-container" id="mapContainer">
             <div>
                 <p>🗺️ Карта загружается...</p>
-                <p style="margin-top: 10px;">Кликните на карту для выбора координат</p>
+                <p id="userStatus" style="margin-top: 10px; color: #aaa;">Не авторизован</p>
             </div>
         </div>
-
-        <!-- Кнопка добавить объект -->
-        <button class="tg-btn" id="addObjectBtn" style="display:none;" onclick="showAddObject()">➕ Добавить объект</button>
     </div>
 
-    <!-- Модал авторизации -->
     <div class="auth-modal" id="authModal">
         <div class="auth-box">
             <h2>🔐 Вход через Telegram</h2>
-            <p style="color: #aaa; margin-bottom: 20px;">Авторизуйтесь через нашего бота</p>
-            
+            <p style="color: #aaa; margin-bottom: 20px;">Авторизуйтесь через бота</p>
             <div class="auth-step">
                 <span class="step-num">1</span>
-                <strong>Откройте Telegram бота</strong>
-                <p style="color: #aaa; font-size: 0.9rem; margin-top: 5px;">Нажмите кнопку ниже чтобы перейти</p>
+                <strong>Откройте бота</strong>
+                <p style="color: #aaa; font-size: 0.9rem; margin-top: 5px;">Нажмите кнопку ниже</p>
             </div>
-            
             <div class="auth-step">
                 <span class="step-num">2</span>
                 <strong>Напишите /webauth</strong>
-                <p style="color: #aaa; font-size: 0.9rem; margin-top: 5px;">Бот отправит вам код авторизации</p>
+                <p style="color: #aaa; font-size: 0.9rem; margin-top: 5px;">Бот отправит код</p>
             </div>
-            
             <div class="auth-step">
                 <span class="step-num">3</span>
-                <strong>Введите код ниже</strong>
-                <p style="color: #aaa; font-size: 0.9rem; margin-top: 5px;">Скопируйте код из бота в это поле</p>
+                <strong>Введите код</strong>
+                <p style="color: #aaa; font-size: 0.9rem; margin-top: 5px;">Скопируйте код в поле</p>
             </div>
-
-            <button class="tg-btn" onclick="openTelegramBot()">📱 Открыть бота в Telegram</button>
-            
+            <button class="tg-btn" onclick="openTelegramBot()">📱 Открыть бота</button>
             <input type="text" class="auth-input" id="authCode" placeholder="Код авторизации" maxlength="8">
-            
             <button class="login-btn" onclick="login()">🔓 Войти</button>
-
             <div class="warning-box">
                 <h4>⚠️ Важно:</h4>
                 <ul>
@@ -362,106 +98,48 @@
                     <li>Забаненные не могут войти</li>
                 </ul>
             </div>
-
-            <button class="cancel-btn" style="margin-top: 15px;" onclick="closeAuth()">Закрыть</button>
+            <button class="nav-btn" style="margin-top: 15px; width: 100%;" onclick="closeAuth()">Закрыть</button>
         </div>
     </div>
 
-    <!-- Модал добавления объекта -->
-    <div class="add-object-modal" id="addObjectModal">
-        <div class="add-object-box">
-            <h2>➕ Добавить объект</h2>
-            <p style="color: #aaa; margin-bottom: 20px;">Заполните информацию о заброшке</p>
-            
-            <div class="form-group">
-                <label>Название *</label>
-                <input type="text" id="objTitle" required>
-            </div>
-            
-            <div class="form-group">
-                <label>Категория *</label>
-                <select id="objCategory">
-                    <option value="factory">🏭 Завод</option>
-                    <option value="shelter">🛡️ Бомбоубежище</option>
-                    <option value="house">🏠 Дом</option>
-                    <option value="structure">🏗️ Структура</option>
-                    <option value="other">📍 Другое</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label>Координаты *</label>
-                <input type="text" id="objCoords" placeholder="Широта, Долгота" required>
-            </div>
-            
-            <div class="form-group">
-                <label>Описание *</label>
-                <textarea id="objDescription" rows="4" required></textarea>
-            </div>
-            
-            <div class="form-group">
-                <label>Сложность *</label>
-                <select id="objDifficulty">
-                    <option value="easy">🟢 Лёгкий - доступно новичкам</option>
-                    <option value="medium">🟠 Средний - требуется опыт</option>
-                    <option value="hard">🔴 Сложный - только для опытных</option>
-                </select>
-            </div>
-            
-            <div class="form-actions">
-                <button class="cancel-btn" onclick="closeAddObject()">Отмена</button>
-                <button class="submit-btn" onclick="submitObject()">Добавить объект</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Уведомления -->
     <div class="error-toast" id="errorToast"></div>
     <div class="success-toast" id="successToast"></div>
 
     <script>
-        // ================= КОНФИГУРАЦИЯ =================
         const API_URL = window.location.origin;
-        const TELEGRAM_BOT_URL = 'https://t.me/your_bot_name'; // Замените на ваш бот
-        
-        // ================= СОСТОЯНИЕ =================
+        const TELEGRAM_BOT_URL = 'https://t.me/your_bot_name';
         let currentUser = null;
-        
-        // ================= ИНИЦИАЛИЗАЦИЯ =================
+
         document.addEventListener('DOMContentLoaded', () => {
             checkAuth();
             setupFilters();
         });
-        
-        // ================= АВТОРИЗАЦИЯ =================
+
         function showAuth() {
             document.getElementById('authModal').style.display = 'flex';
         }
-        
+
         function closeAuth() {
             document.getElementById('authModal').style.display = 'none';
         }
-        
+
         function openTelegramBot() {
             window.open(TELEGRAM_BOT_URL, '_blank');
         }
-        
+
         async function login() {
             const code = document.getElementById('authCode').value.trim();
             if (!code) {
-                showError('Введите код авторизации');
+                showError('Введите код');
                 return;
             }
-            
             try {
                 const response = await fetch(`${API_URL}/api/webauth/verify`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ code })
                 });
-                
                 const data = await response.json();
-                
                 if (data.success) {
                     currentUser = data.user;
                     localStorage.setItem('user', JSON.stringify(currentUser));
@@ -472,11 +150,11 @@
                     showError(data.error || 'Неверный код');
                 }
             } catch (error) {
-                showError('Ошибка соединения с сервером');
+                showError('Ошибка соединения');
                 console.error(error);
             }
         }
-        
+
         async function checkAuth() {
             const savedUser = localStorage.getItem('user');
             if (savedUser) {
@@ -487,9 +165,7 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ telegram_id: user.telegram_id })
                     });
-                    
                     const data = await response.json();
-                    
                     if (data.banned) {
                         showBanned();
                     } else {
@@ -497,131 +173,46 @@
                         updateUI();
                     }
                 } catch (error) {
-                    console.error('Ошибка проверки авторизации:', error);
+                    console.error('Ошибка проверки:', error);
                 }
             }
         }
-        
+
         function updateUI() {
             if (currentUser) {
-                document.getElementById('modBtn').style.display = 
-                    (currentUser.role === 'admin' || currentUser.role === 'moderator') ? 'inline-block' : 'none';
-                document.getElementById('adminBtn').style.display = 
-                    currentUser.role === 'admin' ? 'inline-block' : 'none';
-                document.getElementById('addObjectBtn').style.display = 'inline-block';
+                document.getElementById('userStatus').textContent = `👤 ${currentUser.nickname} (${currentUser.role})`;
+                document.getElementById('logoutBtn').style.display = 'inline-block';
             }
         }
-        
+
+        function logout() {
+            localStorage.removeItem('user');
+            currentUser = null;
+            document.getElementById('userStatus').textContent = 'Не авторизован';
+            document.getElementById('logoutBtn').style.display = 'none';
+            showSuccess('Вы вышли');
+        }
+
         function showBanned() {
             document.getElementById('bannedBox').style.display = 'flex';
         }
-        
-        // ================= ФИЛЬТРЫ =================
+
         function setupFilters() {
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
-                    filterObjects(btn.dataset.filter);
                 });
             });
         }
-        
-        function filterObjects(filter) {
-            console.log('Фильтр:', filter);
-        }
-        
-        // ================= ДОБАВЛЕНИЕ ОБЪЕКТА =================
-        function showAddObject() {
-            document.getElementById('addObjectModal').style.display = 'flex';
-        }
-        
-        function closeAddObject() {
-            document.getElementById('addObjectModal').style.display = 'none';
-            clearForm();
-        }
-        
-        function clearForm() {
-            document.getElementById('objTitle').value = '';
-            document.getElementById('objCategory').value = 'factory';
-            document.getElementById('objCoords').value = '';
-            document.getElementById('objDescription').value = '';
-            document.getElementById('objDifficulty').value = 'easy';
-        }
-        
-        async function submitObject() {
-            const title = document.getElementById('objTitle').value.trim();
-            const category = document.getElementById('objCategory').value;
-            const coords = document.getElementById('objCoords').value.trim();
-            const description = document.getElementById('objDescription').value.trim();
-            const difficulty = document.getElementById('objDifficulty').value;
-            
-            if (!title || !coords || !description) {
-                showError('Заполните все обязательные поля');
-                return;
-            }
-            
-            const [lat, lng] = coords.split(',').map(c => parseFloat(c.trim()));
-            if (isNaN(lat) || isNaN(lng)) {
-                showError('Неверный формат координат');
-                return;
-            }
-            
-            try {
-                const response = await fetch(`${API_URL}/api/objects`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        user_id: currentUser.id,
-                        author_name: currentUser.nickname,
-                        title,
-                        category,
-                        lat,
-                        lng,
-                        description,
-                        difficulty
-                    })
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    showSuccess('Объект добавлен!');
-                    closeAddObject();
-                } else {
-                    showError(data.error || 'Ошибка добавления');
-                }
-            } catch (error) {
-                showError('Ошибка соединения с сервером');
-                console.error(error);
-            }
-        }
-        
-        // ================= НАВИГАЦИЯ =================
-        function showMap() {
-            console.log('Показать карту');
-        }
-        
-        function showProfile() {
-            console.log('Показать профиль');
-        }
-        
-        function showModeration() {
-            console.log('Показать модерацию');
-        }
-        
-        function showAdmin() {
-            console.log('Показать админку');
-        }
-        
-        // ================= УВЕДОМЛЕНИЯ =================
+
         function showError(message) {
             const toast = document.getElementById('errorToast');
             toast.textContent = message;
             toast.style.display = 'block';
             setTimeout(() => toast.style.display = 'none', 3000);
         }
-        
+
         function showSuccess(message) {
             const toast = document.getElementById('successToast');
             toast.textContent = message;
@@ -631,4 +222,3 @@
     </script>
 </body>
 </html>
-#
