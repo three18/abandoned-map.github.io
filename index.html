@@ -35,6 +35,7 @@
         .filter-btn.active { background: #e94560; }
         .error-toast { position: fixed; bottom: 20px; right: 20px; background: #e94560; color: #fff; padding: 15px 20px; border-radius: 5px; display: none; }
         .success-toast { position: fixed; bottom: 20px; right: 20px; background: #27ae60; color: #fff; padding: 15px 20px; border-radius: 5px; display: none; }
+        .user-info { background: #0f3460; padding: 15px; border-radius: 5px; margin: 20px 0; }
     </style>
 </head>
 <body>
@@ -48,18 +49,23 @@
     <div class="header">
         <h1>🗺️ Карта Заброшек</h1>
         <div class="nav-buttons">
-            <button class="nav-btn" onclick="showAuth()">🔐 Вход</button>
+            <button class="nav-btn" id="loginBtn" onclick="showAuth()">🔐 Вход</button>
             <button class="nav-btn" id="logoutBtn" style="display:none;" onclick="logout()">🚪 Выход</button>
         </div>
     </div>
 
     <div class="main-content">
+        <div class="user-info" id="userInfo" style="display:none;">
+            <p>👤 <span id="userName"></span> | <span id="userRole"></span></p>
+        </div>
+
         <div class="filters">
             <button class="filter-btn active" data-filter="all">Все</button>
             <button class="filter-btn" data-filter="factory">🏭 Заводы</button>
             <button class="filter-btn" data-filter="shelter">🛡️ Убежища</button>
             <button class="filter-btn" data-filter="house">🏠 Дома</button>
         </div>
+
         <div class="map-container" id="mapContainer">
             <div>
                 <p>🗺️ Карта загружается...</p>
@@ -181,6 +187,10 @@
         function updateUI() {
             if (currentUser) {
                 document.getElementById('userStatus').textContent = `👤 ${currentUser.nickname} (${currentUser.role})`;
+                document.getElementById('userName').textContent = currentUser.nickname;
+                document.getElementById('userRole').textContent = currentUser.role;
+                document.getElementById('userInfo').style.display = 'block';
+                document.getElementById('loginBtn').style.display = 'none';
                 document.getElementById('logoutBtn').style.display = 'inline-block';
             }
         }
@@ -189,6 +199,8 @@
             localStorage.removeItem('user');
             currentUser = null;
             document.getElementById('userStatus').textContent = 'Не авторизован';
+            document.getElementById('userInfo').style.display = 'none';
+            document.getElementById('loginBtn').style.display = 'inline-block';
             document.getElementById('logoutBtn').style.display = 'none';
             showSuccess('Вы вышли');
         }
